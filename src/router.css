@@ -1,0 +1,14 @@
+.routers{
+    width:100%;
+    min-height: 100%;
+    position: absolute;
+    left:0;
+    bottom:0;
+  
+ 
+}
+.footerNav{
+    position: fixed;
+    bottom: 0;
+    left:0
+}
