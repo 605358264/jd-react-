@@ -1,5 +1,5 @@
 import React from 'react';
-import {HashRouter as Router,Route,Switch} from 'react-router-dom'
+import {HashRouter as Router,Route,Switch,Redirect} from 'react-router-dom'
 import FooterNav from './components/footerNav'
 import asyncComponts from './components/async/AsyncComponent'
 import './router.css'
@@ -33,10 +33,11 @@ class RouterCompont extends React.Component {
         <Router>
           <React.Fragment>
             <Switch>
-              <Route  path={config.path} component={IndexCompont}/>
+              
               <Route  path={config.path+"home"} component={IndexCompont}/>
               <Route  path={config.path+"shop"} component={ShopCompont}/>
               <Route  path={config.path+"my"} component={MyCompont}/>
+              <Redirect to={config.path+"home"}></Redirect>
             </Switch>
             <FooterNav className="footerNav"/> 
           </React.Fragment>

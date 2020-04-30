@@ -19,16 +19,19 @@ class FooterNav extends React.Component {
   componentDidMount(){
     this.handleNavStyle(this.context)
     console.log(this.context,'123')
+    console.log(this.state,'123')
 }
 componentWillReceiveProps(newContext){
     this.handleNavStyle(newContext)
     console.log(newContext,'345')
+    console.log(this.state,'345')
 }
   goPage(pUrl){ 
    
    this.context.router.history.replace(config.path+pUrl)
  
   }
+  // 切换样式函数
   handleNavStyle(context){
     console.log(context,'7')
     switch (this.context.router.route.location.pathname){
