@@ -3,72 +3,111 @@ import "./index.css"
 
 import Swiper from 'swiper/js/swiper.js'
 import 'swiper/css/swiper.min.css'
-import banner1Img from "../../assets/images/home/index/banner_1.jpg"
-import banner2Img from "../../assets/images/home/index/banner_2.jpg"
-import banner3Img from "../../assets/images/home/index/banner_3.jpg"
-import banner4Img from "../../assets/images/home/index/banner_4.jpg"
+import {lazyImg} from '../../assets/js/utils/index.js'
 
-import funset1Img from "../../assets/images/home/index/funset_1.png"
-import funset2Img from "../../assets/images/home/index/funset_2.png"
-import funset3Img from "../../assets/images/home/index/funset_3.png"
-import funset4Img from "../../assets/images/home/index/funset_4.png"
-import funset5Img from "../../assets/images/home/index/funset_5.png"
-import goodsItem from "../../assets/images/home/index/goods1.jpg"
-import goodsItem2 from "../../assets/images/home/index/good2.jpg"
-import goodsItem3 from "../../assets/images/home/index/goods3.jpg"
+
+import {request} from "../../assets/js/config/request.js"
+import Home from '../../api/home'
+
 class IndexCompont extends React.Component {
   constructor (props){
     super (props)
     this.state={
       funsetArr:[
-        {
-          img:funset1Img,
-          id:1
-        },{
-          img:funset2Img,
-          id:2
-        },{
-          img:funset3Img,
-          id:3
-        },{
-          img:funset4Img,
-          id:4
-        },{
-          img:funset5Img,
-          id:5
-        }
+     
        ],
        bannerArr:[
-        {
-          img:banner1Img,
-          id:1
-        },{
-          img:banner2Img,
-          id:2
-        },{
-          img:banner3Img,
-          id:3
-        },{
-          img:banner4Img,
-          id:4
-        }
-       ]
-    }
-  }
-  componentDidMount(){
+       
+       ],
+       navArr:[],
+       productArr:[],
+       homeRecommodArr:[],
       
-    new Swiper('.swiper-container', {
-      loop:true,
-      autoplay:true,
-      pagination: {
-      el: '.swiper-pagination',
-      },
-    });
+    }
+    
   }
+  componentDidMount(){    
   
-  render(){
+    this.getSwiper()
+    this.getNav()
+    this.getProduct()
+    this.getHomeRecommond()
    
+  }
 
+
+  // 获取轮播图数据
+
+  getSwiper(){    
+  
+     request(Home.swiperApi).then(res=>{
+      
+       if(res.code===200){
+         
+         this.setState({
+          bannerArr:res.data
+          
+         },()=>{
+          lazyImg()
+        },()=>{
+            // 轮播样式
+          new Swiper('.swiper-container', {
+            loop:true,
+            autoplay:true,
+            pagination: {
+            el: '.swiper-pagination',
+            },
+          });
+        })
+       }
+     })
+  }
+
+  // 获取首页导航
+
+  getNav(){
+    request(Home.homeNavApi).then(res=>{
+      if(res.code===200){
+        this.setState({
+          navArr:res.data
+        },()=>{
+          lazyImg()
+        })
+      }
+    })
+  }
+
+  //获取首页产品
+
+  getProduct(){
+    request(Home.homeProductApi).then(res=>{
+    if(res.code===200){
+      this.setState({
+        productArr:res.data
+      },()=>{
+        lazyImg()
+      })
+    }
+   })
+  }
+ // 获取首页推荐
+
+ getHomeRecommond(){
+   request(Home.homeRecommodApi).then(res=>{
+    if(res.code===200){
+    
+      this.setState({
+        
+        homeRecommodArr:res.data
+        
+      },()=>{
+        lazyImg()
+      })
+    }
+   })
+ }
+
+  render(){
     return (
         <div className="home">
           
@@ -85,297 +124,141 @@ class IndexCompont extends React.Component {
           
         
           <div className="swiper-container">
-              <div className="swiper-wrapper">
-                
-                  {this.state.bannerArr.map(item=>
-                  (
-                    <div class="swiper-slide">
-                      <img src={item.img} alt="" />
-                    </div>
-                  ))  
-                  }     
-              </div>
-              <div className="swiper-pagination"></div> 
+            <div className="swiper-wrapper">  
+              {this.state.bannerArr.map(item=>
+                (
+                  <div className="swiper-slide">
+                    <img src={item.image} alt="" />
+                  </div>
+                )
+              )}     
             </div>
+            <div className="swiper-pagination"></div> 
+          </div>
       
           <div className="quickNav">
-              <ul>
-                <li className="quickImg">
-                  <img src={funset1Img} alt=""/>
-                </li>
-                <li><span className="quickTitle">潮流女装</span></li>
-              </ul>
-              <ul>
-                <li className="quickImg">
-                  <img src={funset2Img} alt=""/>
-                </li>
-                <li><span className="quickTitle">潮流女装</span></li>
-              </ul>
-              <ul>
-                <li className="quickImg">
-                  <img src={funset3Img} alt=""/>
-                </li>
-                <li><span className="quickTitle">潮流女装</span></li>
-              </ul>
-              <ul>
-                <li className="quickImg">
-                  <img src={funset4Img} alt=""/>
-                </li>
-                <li><span className="quickTitle">手机数码</span></li>
-              </ul>  
+            {this.state.navArr.map(item=>
+              (
+                <ul>
+                  <li className="quickImg">
+                    <img src={item.image} alt=""/>
+                  </li>
+                  <li><span className="quickTitle">{item.title}</span></li>
+                </ul>
+              )
+            )}
           </div>
               {/*好货*/ } 
-           <div className="goods">
-             <div>
-                <div className="goodstitle">
-                  <span>潮流女装</span>
-                </div>
-                <div className="goodsContent">
-                  <div className="goodsContentLeft"> 
-                    <span className="goodsContentItemTitleDetail">高跟鞋女2018新款春季单鞋仙女甜美链子尖头防女台细跟女鞋一字带</span>
-                    <span className="goodsContentItemTitleDisCount">精品打折</span>
-                    <span className="goodsContentItemPrice">12.8</span>
-                    <img src={goodsItem} alt=""/>   
-                </div>
-                  <div className="goodsContentRight">
-                  <div className="goodsContentRightItemRow">
-                    <span className="goodsContentRightItemRowTitle">欧美尖头蝴蝶结拖鞋女夏外穿2018新款绸缎面细跟凉拖半拖鞋穆勒鞋</span>
-                    <span className="goodsContentRightItemRowChoice">品质精挑</span>
-                    <img src={goodsItem2} alt=""/>
-                  </div>
-                  <div className="goodsContentRightItemRow">
-                    <span className="goodsContentRightItemRowTitle">老爹鞋女韩版ulzzang原宿百搭网鞋透气网面内增高运动鞋网鞋夏季</span>
-                    <span className="goodsContentRightItemRowChoice">品质精挑</span>
-                    <img src={goodsItem3} alt=""/>
-                  </div>
-                </div>
-              </div>
-              {/*女鞋*/ } 
-              <div className="goodsNew">
-                <ul className='goodsNewList'>
-                  <li className="goodsNewListTitle">小白鞋女2018春夏季新款韩版百搭平底学生原宿ulzzang帆布鞋板鞋</li>
-                  <li className="goodsNewListImg">
-                    <img src={goodsItem} alt=""/>
-                  </li>
-                  <li className="oldPrice">288</li>
-                  <li className="newPrice">576</li>
-                </ul>
-                <ul className='goodsNewList'>
-                <li className="goodsNewListTitle">小白鞋女2018春夏季新款韩版百搭平底学生原宿ulzzang帆布鞋板鞋</li>
-                  <li className="goodsNewListImg">
-                    <img src={goodsItem2} alt=""/>
-                  </li>
-                  <li className="oldPrice">288</li>
-                  <li className="newPrice">576</li>
-                </ul>
-                <ul className='goodsNewList'>
-                <li className="goodsNewListTitle">小白鞋女2018春夏季新款韩版百搭平底学生原宿ulzzang帆布鞋板鞋</li>
-                  <li className="goodsNewListImg">
-                    <img src={goodsItem3} alt=""/>
-                  </li>
-                  <li className="oldPrice">288</li>
-                  <li className="newPrice">576</li>
-                </ul>
-                <ul className='goodsNewList'>
-                <li className="goodsNewListTitle">小白鞋女2018春夏季新款韩版百搭平底学生原宿ulzzang帆布鞋板鞋</li>
-                  <li className="goodsNewListImg">
-                    <img src={goodsItem} alt=""/>
-                  </li>
-                  <li className="oldPrice">288</li>
-                  <li className="newPrice">576</li>
-                </ul>
-              </div>    
-            </div>
-          </div>       
-           {/*男装*/ } 
-            <div className="man">
-              <div className="goodstitle">
-                <span>品牌男装</span>
-              </div>
-              <div className="manGoodsWrap1">
-                  <ul className="manGoodsCol">
-                    <li className="manGoodsColTitle">新款短袖男士夏季3d立体图案体恤猴子搞怪大猩猩个性t恤大码衣服</li>
-                    <li className="isShow">火爆开售</li>
-                    <li className="manGoodsColImg">
-                      <img src={goodsItem3} alt=""/>
-                    </li>
-                  </ul>
-                  <ul className="manGoodsCol">
-                    <li className="manGoodsColTitle">新款短袖男士夏季3d立体图案体恤猴子搞怪大猩猩个性t恤大码衣服</li>
-                    <li className="isShow">火爆开售</li>
-                    <li className="manGoodsColImg">
-                      <img src={goodsItem3} alt=""/>
-                    </li>
-                  </ul>
-              </div>
-              <div className="goodsNew">
-                <ul className='goodsNewList'>
-                  <li className="goodsNewListTitle">牛仔裤男宽松九分裤韩版潮流文艺男生直筒夏季薄裤子百搭学生港风</li>
-                  <li className="goodsNewListImg">
-                    <img src={goodsItem} alt=""/>
-                  </li>
-                  <li className="oldPrice">288</li>
-                  <li className="newPrice">576</li>
-                </ul>
-                <ul className='goodsNewList'>
-                <li className="goodsNewListTitle">牛仔裤男宽松九分裤韩版潮流文艺男生直筒夏季薄裤子百搭学生港风</li>
-                  <li className="goodsNewListImg">
-                    <img src={goodsItem2} alt=""/>
-                  </li>
-                  <li className="oldPrice">119</li>
-                  <li className="newPrice">576</li>
-                </ul>
-                <ul className='goodsNewList'>
-                <li className="goodsNewListTitle">衣长: 常规领型: 连帽颜色: 白色 黑色尺码: S 现货 M 现货 L 现货面料分类: 涂层布款式细节: 多口袋品牌: harsh and cruel/桀骜不驯男装-穿着方式: 外穿厚薄: 加厚填充物: 灰鸭绒适用场景: 其他休闲基础风格: 青春流行</li>
-                  <li className="goodsNewListImg">
-                    <img src={goodsItem3} alt=""/>
-                  </li>
-                  <li className="oldPrice">69</li>
-                  <li className="newPrice">138</li>
-                </ul>
-                <ul className='goodsNewList'>
-                <li className="goodsNewListTitle">HARSHCRUEL 秋冬男保暖充绒夹棉加厚防风羽绒棉服高领面罩TPU外套</li>
-                  <li className="goodsNewListImg">
-                    <img src={goodsItem} alt=""/>
-                  </li>
-                  <li className="oldPrice">69</li>
-                  <li className="newPrice">138</li>
-                </ul>
-              </div> 
-            </div>   
-
-
-            {/*办公*/ } 
-            <div className="office">
-                <div className="goodsOfficetitle">
-                  <span>办公用品</span>
-                </div>
-                <div className="goodsOfficeContent">
-                  <div className="goodsOfficeContentLeft"> 
-                    <span className="goodsContentItemTitleDetail">酷睿i5四核GTX1060独显台式机组装电脑主机整机 绝地求生吃鸡游戏</span>
-                    <span className="goodsContentItemTitleDisCount">精品打折</span>
-                    <span className="goodsContentItemPrice">4599</span>
-                    <img src={goodsItem} alt=""/>   
-                </div>
-                  <div className="goodsContentRight">
-                  <div className="goodsContentRightItemRow">
-                    <span className="goodsContentRightItemRowTitle">欧美尖头蝴蝶结拖鞋女夏外穿2018新款绸缎面细跟凉拖半拖鞋穆勒鞋</span>
-                    <span className="goodsContentRightItemRowChoice">品质精挑</span>
-                    <img src={goodsItem2} alt=""/>
-                  </div>
-                  <div className="goodsContentRightItemRow">
-                    <span className="goodsContentRightItemRowTitle">老爹鞋女韩版ulzzang原宿百搭网鞋透气网面内增高运动鞋网鞋夏季</span>
-                    <span className="goodsContentRightItemRowChoice">品质精挑</span>
-                    <img src={goodsItem3} alt=""/>
-                  </div>
-                </div>
-              </div> 
-              <div className="goodsNew">
-                <ul className='goodsNewList'>
-                  <li className="goodsNewListTitle">小白鞋女2018春夏季新款韩版百搭平底学生原宿ulzzang帆布鞋板鞋</li>
-                  <li className="goodsNewListImg">
-                    <img src={goodsItem} alt=""/>
-                  </li>
-                  <li className="oldPrice">288</li>
-                  <li className="newPrice">576</li>
-                </ul>
-                <ul className='goodsNewList'>
-                <li className="goodsNewListTitle">小白鞋女2018春夏季新款韩版百搭平底学生原宿ulzzang帆布鞋板鞋</li>
-                  <li className="goodsNewListImg">
-                    <img src={goodsItem2} alt=""/>
-                  </li>
-                  <li className="oldPrice">288</li>
-                  <li className="newPrice">576</li>
-                </ul>
-                <ul className='goodsNewList'>
-                <li className="goodsNewListTitle">小白鞋女2018春夏季新款韩版百搭平底学生原宿ulzzang帆布鞋板鞋</li>
-                  <li className="goodsNewListImg">
-                    <img src={goodsItem3} alt=""/>
-                  </li>
-                  <li className="oldPrice">288</li>
-                  <li className="newPrice">576</li>
-                </ul>
-                <ul className='goodsNewList'>
-                <li className="goodsNewListTitle">小白鞋女2018春夏季新款韩版百搭平底学生原宿ulzzang帆布鞋板鞋</li>
-                  <li className="goodsNewListImg">
-                    <img src={goodsItem} alt=""/>
-                  </li>
-                  <li className="oldPrice">288</li>
-                  <li className="newPrice">576</li>
-                </ul>
-              </div>               
-            </div>
-       
+           <div >
+             {
+               this.state.productArr != null ? 
+                this.state.productArr.map((item,index)=>{
+                  return(             
+                  <div key={index} className="man">
+                    <div className="goodstitle">
+                      <span>{item.title}</span>
+                    </div>
+                    <div>
+                      { index %2===1 ?
+                        (<div><div className="manGoodsWrap1">
+                          {
+                            item.items != null ?
+                              item.items.slice(0,2).map((item1,index1)=>{
+                                return(                                  
+                                    <ul className="manGoodsCol" key={index1}>
+                                      <li className="manGoodsColTitle">{item1.title}</li>
+                                      <li className="isShow">火爆开售</li>
+                                      <li className="manGoodsColImg">
+                                        <img data-echo={item1.image ||''} src={require("../../assets/images/common/lazyImg.jpg")} alt=""/>
+                                      </li>
+                                    </ul>
+                                )
+                              })
+                            :''
+                          }                      
+                        </div>
+                        <div className="goodsNew">
+                          {item.items.slice(2).map((item4)=>{
+                            return(
+                              <ul className="goodsNewList">
+                                <li className="goodsNewListTitle">{item4.title}</li>
+                                <li className="goodsNewListImg"><img src={item4.image} alt=""/></li>
+                                <li className="newPrice">{item4.price}</li>
+                                <li className="oldPrice">{item4.cid}</li>
+                              </ul>
+                            )
+                          })}
+                        </div>
+                        </div>
+                        ):
+                        (                
+                          <div>
+                              <div className="goods">
+                                    <div className="goodsContent">
+                                      <div className="goodsContentLeft"> 
+                                        <span className="goodsContentItemTitleDetail">{item.items[0].title}</span>
+                                        <span className="goodsContentItemTitleDisCount">精品打折</span>
+                                        <span className="goodsContentItemPrice">{item.items[0].price}</span>
+                                        <div className="goodsContentItemsImg"><img src={item.items[0].image} alt=""/></div>   
+                                      </div>
+                                      <div className="goodsContentRight">
+                                        {
+                                          item.items.slice(1,3).map((item2)=>{
+                                            return(
+                                              <div className="goodsContentRightItemRow">
+                                                <span className="goodsContentRightItemRowTitle">{item2.title}</span>
+                                                <span className="goodsContentRightItemRowChoice">品质精挑</span>
+                                                <img data-echo={item2.image || ''} src={require("../../assets/images/common/lazyImg.jpg")} alt=""/>
+                                              </div>  
+                                            )
+                                          })
+                                        }
+                                      </div> 
+                                    </div>
+                                    <div className="goodsNew">
+                                        {item.items.slice(3).map((item3)=>{
+                                          return(
+                                            <ul className="goodsNewList">
+                                              <li className="goodsNewListTitle">{item3.title}</li>
+                                              <li className="goodsNewListImg"><img data-echo={item3.image || ''} src={require("../../assets/images/common/lazyImg.jpg")} alt=""/></li>
+                                              <li className="newPrice">{item3.price}</li>
+                                              <li className="oldPrice">{item3.cid}</li>
+                                            </ul>
+                                          )
+                                        })}
+                                      </div>
+                                    
+                              </div>
+                          </div>         
+                       ) 
+                      } 
+                   </div>
+                  </div>  
+               )}):''
+             }
+            </div> 
+                  
             {/*为您推荐*/ }
             <div className="goodsRecommend">
               <span>为您推荐</span>
             </div>
             <div className="goodsRecommendContent">
-              <div className="goodsRecommendContentItem">
-                  <div className="goodsRecommendContentItemImg"><img src={goodsItem} alt=""/></div>
-                  <div className="goodsRecommendContentItemTitle"><span>ONLY冬装新品雪纺拼接流苏腰带长款连衣裙女</span></div>
-                  <div className='goodsRecommendContentItemPrice'>399</div>
-              </div>
-              <div className="goodsRecommendContentItem">
-                  <div className="goodsRecommendContentItemImg"><img src={goodsItem} alt=""/></div>
-                  <div className="goodsRecommendContentItemTitle"><span>ONLY冬装新品雪纺拼接流苏腰带长款连衣裙女</span></div>
-                  <div className='goodsRecommendContentItemPrice'>399</div>
-              </div>
-              <div className="goodsRecommendContentItem">
-                  <div className="goodsRecommendContentItemImg"><img src={goodsItem} alt=""/></div>
-                  <div className="goodsRecommendContentItemTitle"><span>ONLY冬装新品雪纺拼接流苏腰带长款连衣裙女</span></div>
-                  <div className='goodsRecommendContentItemPrice'>399</div>
-              </div>
-              <div className="goodsRecommendContentItem">
-                  <div className="goodsRecommendContentItemImg"><img src={goodsItem} alt=""/></div>
-                  <div className="goodsRecommendContentItemTitle"><span>ONLY冬装新品雪纺拼接流苏腰带长款连衣裙女</span></div>
-                  <div className='goodsRecommendContentItemPrice'>399</div>
-              </div>
-              <div className="goodsRecommendContentItem">
-                  <div className="goodsRecommendContentItemImg"><img src={goodsItem} alt=""/></div>
-                  <div className="goodsRecommendContentItemTitle"><span>ONLY冬装新品雪纺拼接流苏腰带长款连衣裙女</span></div>
-                  <div className='goodsRecommendContentItemPrice'>399</div>
-              </div>
-              <div className="goodsRecommendContentItem">
-                  <div className="goodsRecommendContentItemImg"><img src={goodsItem} alt=""/></div>
-                  <div className="goodsRecommendContentItemTitle"><span>ONLY冬装新品雪纺拼接流苏腰带长款连衣裙女</span></div>
-                  <div className='goodsRecommendContentItemPrice'>399</div>
-              </div>
-              <div className="goodsRecommendContentItem">
-                  <div className="goodsRecommendContentItemImg"><img src={goodsItem} alt=""/></div>
-                  <div className="goodsRecommendContentItemTitle"><span>ONLY冬装新品雪纺拼接流苏腰带长款连衣裙女</span></div>
-                  <div className='goodsRecommendContentItemPrice'>399</div>
-              </div>
-              <div className="goodsRecommendContentItem">
-                  <div className="goodsRecommendContentItemImg"><img src={goodsItem} alt=""/></div>
-                  <div className="goodsRecommendContentItemTitle"><span>ONLY冬装新品雪纺拼接流苏腰带长款连衣裙女</span></div>
-                  <div className='goodsRecommendContentItemPrice'>399</div>
-              </div>
-              <div className="goodsRecommendContentItem">
-                  <div className="goodsRecommendContentItemImg"><img src={goodsItem} alt=""/></div>
-                  <div className="goodsRecommendContentItemTitle"><span>ONLY冬装新品雪纺拼接流苏腰带长款连衣裙女</span></div>
-                  <div className='goodsRecommendContentItemPrice'>399</div>
-              </div>
-              <div className="goodsRecommendContentItem">
-                  <div className="goodsRecommendContentItemImg"><img src={goodsItem} alt=""/></div>
-                  <div className="goodsRecommendContentItemTitle"><span>ONLY冬装新品雪纺拼接流苏腰带长款连衣裙女</span></div>
-                  <div className='goodsRecommendContentItemPrice'>399</div>
-              </div>
-              <div className="goodsRecommendContentItem">
-                  <div className="goodsRecommendContentItemImg"><img src={goodsItem} alt=""/></div>
-                  <div className="goodsRecommendContentItemTitle"><span>ONLY冬装新品雪纺拼接流苏腰带长款连衣裙女</span></div>
-                  <div className='goodsRecommendContentItemPrice'>399</div>
-              </div>
-              <div className="goodsRecommendContentItem">
-                  <div className="goodsRecommendContentItemImg"><img src={goodsItem} alt=""/></div>
-                  <div className="goodsRecommendContentItemTitle"><span>ONLY冬装新品雪纺拼接流苏腰带长款连衣裙女</span></div>
-                  <div className='goodsRecommendContentItemPrice'>399</div>
-              </div>
+              {this.state.homeRecommodArr.map(i=>{
+                return(
+                  <div className="goodsRecommendContentItem">
+                    <div className="goodsRecommendContentItemImg"><img data-echo={i.image || ''} src={require("../../assets/images/common/lazyImg.jpg")} alt=""/></div>
+                    <div className="goodsRecommendContentItemTitle"><span>{i.title}</span></div>
+                    <div className='goodsRecommendContentItemPrice'>{i.price}</div>
+                  </div>
+                )
+              })}
+             
               <div className="wrapFooter">
 
               </div>
             </div> 
-       </div>
+        </div>
+        
       )
   }
 

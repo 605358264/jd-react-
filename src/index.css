@@ -65,3 +65,19 @@ html,body {
         font-size: 54.61px!important;
     }
 }
+
+.load{
+    width:0.5rem;
+    height:0.5rem;
+    background-image:url("./assets/images/common/load.gif");
+    background-size:100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: fixed;
+    z-index: 999;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    -webkit-transform:translate(-50%,-50%);
+    display:none;
+}

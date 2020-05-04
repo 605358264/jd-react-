@@ -180,11 +180,15 @@
     top: 1.5rem;
     border-radius: 10px;
 }
-.goods .goodsContent .goodsContentLeft img{
+.goods .goodsContent .goodsContentLeft .goodsContentItemsImg{
     width: 7.5rem;
     height: 5rem;
     margin: 0 auto;
     margin-top: 3rem;
+}
+.goods .goodsContent .goodsContentLeft .goodsContentItemsImg img{
+    width:100%;
+    height:100%;
 }
 .goodsContentRight{
     height:100%;
@@ -258,18 +262,18 @@
     margin-top: 0.5rem;
 }
 
-.oldPrice{
+.newPrice{
     width: 100%;
     text-align: center;
     color: #D32A4E;
     font-size: 0.7rem;
     margin-top: 0.75rem;
 }
-.newPrice{
+.oldPrice{
     width: 100%;
     text-align: center;
     color: #7b7f82;
-    font-size: 0.28rem;
+    font-size: 0.7rem;
     margin-top: 0rem;
     text-decoration: line-through;
 }
@@ -288,15 +292,16 @@
     line-height: 1.24rem;
     color: #FE6719
 }
-.man .manGoodsWrap1{
+.manGoodsWrap1{
     display: flex;
     width:100%;
     height:8.75rem;
+    flex-wrap: nowrap;
 }
 
-.man .manGoodsWrap1 .manGoodsCol{
+ .manGoodsWrap1 .manGoodsCol{
     border-right: solid #EFEFEF 1px;
-    width:100%;
+    width:50%;
     height:100%;
 }
 .man .manGoodsWrap1 .manGoodsColTitle{
