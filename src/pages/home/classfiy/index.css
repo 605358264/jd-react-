@@ -1,0 +1,122 @@
+.classify{
+    width:100%;
+    min-height:100vh;
+}
+.classify .searchHeader{   
+    width: 100%;
+    height: 2.5rem;
+    background: #FFFFFF;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    -webkit-align-items: center;
+    border-bottom: 1px solid #EFEFEF;
+}
+.classify .searchHeader .headerIcon{
+    background: url(../../../assets/images/home/goods/back.png) no-repeat;
+    background-size:100% 100%;
+    width:2rem;
+    height:2rem;
+}
+.classify .searchHeader .headerInput{
+    border:1px solid  #B2B2B2;
+    height:2rem;
+    width:80%;
+    border-radius: 0.25rem;   
+    line-height: 2rem;
+    vertical-align: middle;
+    padding-left:0.5rem
+}
+.classify .searchHeader .headerInput span{
+    font-size: 0.7rem;
+}
+
+.classifyWrap{
+    width:100%;
+    height:92.5vh;
+    display: flex;
+}
+.classifyWrap .leftNav{
+    width: 4.3rem;
+    height: 100%;
+    overflow: hidden;
+    margin-right: 3%;
+    position: relative;
+    z-index: 1;
+}
+.classifyWrap .leftNav .leftNavTitle{
+    width: 100%;
+    height:2rem;
+    border-bottom: 1px solid #EFEFEF;
+    background-color: #FFFFFF;
+    font-size: 0.7rem;
+    text-align: center;
+    line-height: 2rem;
+    overflow: hidden;
+   
+}
+.classifyWrap .leftNav  .active{
+    color:red;
+   
+} 
+.right{
+    width: 71%;
+    height: 92.5vh;
+    position: relative;
+}
+.rightContent{
+    width:100%;
+    height:100%;
+    overflow: hidden;
+}
+.rightContent .rightContentWrap{
+ 
+    width:100%;
+    height:auto;    
+}
+
+.rightContent .rightContentWrap .rightContentTitle{    
+    width: 100%;
+    height: 2rem;
+    line-height: 2rem;
+    overflow: hidden;    
+}
+
+.rightContent .rightContentWrap .rightContentTitle span{
+    font-size: 0.7rem; 
+}
+.rightContentItemWrap{
+    margin-top:1rem;
+    width:100%;
+    height:auto;
+}
+.rightContentItemWrapCon{
+    width: 32%;
+    height: auto;
+    float: left;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    margin-bottom: 0.5rem;
+}
+.rightContentItemImg{
+    width: 2.25rem;
+    height: 2.25rem;
+    overflow: hidden;
+    margin: 0 auto;
+    text-align: center;
+}
+.rightContentItemImg img{
+    width:100%;
+    height:100%;
+}
+.rightContentItemTitle{
+    width: 90%;
+    height: 2rem;
+    font-size: 0.6rem;
+    overflow: hidden;
+    text-align: center;
+    margin: 0 auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-top: 0.5rem;
+}

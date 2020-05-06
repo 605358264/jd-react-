@@ -5,7 +5,7 @@ import Swiper from 'swiper/js/swiper.js'
 import 'swiper/css/swiper.min.css'
 import {lazyImg} from '../../assets/js/utils/index.js'
 
-
+import FooterNav from '../../components/footerNav'
 import {request} from "../../assets/js/config/request.js"
 import Home from '../../api/home'
 
@@ -107,6 +107,14 @@ class IndexCompont extends React.Component {
    })
  }
 
+ // 跳转分类
+
+  gotoClassify(){
+
+    this.props.history.push('./classify')
+
+  } 
+
   render(){
     return (
         <div className="home">
@@ -122,7 +130,7 @@ class IndexCompont extends React.Component {
             </div>    
           </div>
           
-        
+         {/*轮播*/}
           <div className="swiper-container">
             <div className="swiper-wrapper">  
               {this.state.bannerArr.map(item=>
@@ -135,17 +143,18 @@ class IndexCompont extends React.Component {
             </div>
             <div className="swiper-pagination"></div> 
           </div>
-      
+         
           <div className="quickNav">
-            {this.state.navArr.map(item=>
-              (
-                <ul>
+            {this.state.navArr.map((item,index)=>{
+              return (
+                <ul onClick={this.gotoClassify.bind(this)}>
                   <li className="quickImg">
                     <img src={item.image} alt=""/>
                   </li>
                   <li><span className="quickTitle">{item.title}</span></li>
                 </ul>
               )
+              } 
             )}
           </div>
               {/*好货*/ } 
@@ -256,7 +265,9 @@ class IndexCompont extends React.Component {
               <div className="wrapFooter">
 
               </div>
+              
             </div> 
+            <FooterNav></FooterNav>
         </div>
         
       )

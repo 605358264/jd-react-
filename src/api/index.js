@@ -1,4 +1,6 @@
 import Home from './home'
+import Classify from '/.classify'
 export default{
-    Home
+    Home,
+    Classify
 }
